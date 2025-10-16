@@ -1,7 +1,5 @@
 <script setup lang="ts"></script>
 
-<template>
-    <h1>Configurado</h1>
-</template>
+<template></template>
 
 <style scoped></style>
