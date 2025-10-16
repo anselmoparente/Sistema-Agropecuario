@@ -1,15 +1,28 @@
-<script setup lang="ts">
+<script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Button, InputText, Password, useToast } from 'primevue';
 
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
-
+import AppLayout from '@/Layouts/AppLayout.vue';
 import logo from '@/assets/logo.png';
+
+defineOptions({ layout: AppLayout });
 
 const form = useForm({
     email: '',
     password: '',
+});
+const toast = useToast();
+
+const login = () => form.post(route('login'), {
+    onError: (errors) => {
+        const firstError = Object.values(errors)[0];
+        toast.add({
+            severity: 'error',
+            summary: 'Erro de Autenticação',
+            detail: firstError,
+            life: 3000
+        });
+    }
 });
 </script>
 
@@ -29,7 +42,7 @@ const form = useForm({
                 </p>
             </div>
 
-            <form @submit.prevent="" class="space-y-6">
+            <form @submit.prevent="login" class="space-y-6">
                 <div class="flex flex-col gap-2">
                     <label for="email" class="font-semibold text-gray-700 dark:text-gray-200">E-mail</label>
                     <InputText id="email" v-model="form.email" type="email" placeholder="seuemail@email.com"

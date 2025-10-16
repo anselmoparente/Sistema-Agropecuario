@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -42,7 +43,9 @@ class AuthController extends Controller
             return to_route('home.index');
         }
 
-        return response()->json(['ok' => false, 'message' => 'Credenciais inválidas'], 401);
+        throw ValidationException::withMessages([
+            'credentials' => 'As credenciais fornecidas não correspondem aos nossos registros.',
+        ]);
     }
 
     function logout(Request $request)
@@ -52,6 +55,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return to_route('login.index');
+        return to_route('login');
     }
 }

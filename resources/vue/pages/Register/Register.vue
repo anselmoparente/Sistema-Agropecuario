@@ -1,17 +1,28 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Button, Card, FloatLabel, InputText, Password, useToast } from 'primevue';
 
-import Button from 'primevue/button';
-import Card from 'primevue/card';
-import FloatLabel from 'primevue/floatlabel';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
+import AppLayout from '@/Layouts/AppLayout.vue';
+
+defineOptions({ layout: AppLayout });
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+});
+
+const register = () => form.post(route('register'), {
+    onError: (errors) => {
+        const firstError = Object.values(errors)[0];
+        toast.add({
+            severity: 'error',
+            summary: 'Erro no Cadastro',
+            detail: firstError,
+            life: 3000
+        });
+    }
 });
 </script>
 
@@ -25,7 +36,7 @@ const form = useForm({
                 <h2 class="text-2xl font-bold text-center">Criar Conta</h2>
             </template>
             <template #content>
-                <form @submit.prevent="submit" class="mt-8">
+                <form @submit.prevent="register" class="mt-8">
                     <div class="flex flex-col gap-8">
                         <FloatLabel>
                             <InputText id="name" v-model="form.name" class="w-full" input-class="w-full"
