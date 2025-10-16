@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
@@ -8,11 +7,14 @@ import Password from 'primevue/password';
 
 import logo from '@/assets/logo.png';
 
-const email = ref<string>('');
-const password = ref<string>('');
+const form = useForm({
+    email: '',
+    password: '',
+});
 </script>
 
 <template>
+
     <Head title="Login"></Head>
 
     <div class="flex items-center justify-center min-h-screen bg-green-100 dark:bg-green-900">
@@ -27,16 +29,16 @@ const password = ref<string>('');
                 </p>
             </div>
 
-            <form @submit.prevent="submit" class="space-y-6">
+            <form @submit.prevent="" class="space-y-6">
                 <div class="flex flex-col gap-2">
                     <label for="email" class="font-semibold text-gray-700 dark:text-gray-200">E-mail</label>
-                    <InputText id="email" v-model="email" type="email" placeholder="seuemail@email.com" class="w-full"
-                        autofocus />
+                    <InputText id="email" v-model="form.email" type="email" placeholder="seuemail@email.com"
+                        class="w-full" autofocus />
                 </div>
 
                 <div class="flex flex-col gap-2 w-full">
                     <label for="password" class="font-semibold text-gray-700 dark:text-gray-200">Senha</label>
-                    <Password id="password1" v-model="password" placeholder="••••••••••••" :toggleMask="true"
+                    <Password id="password1" v-model="form.password" placeholder="••••••••••••" :toggleMask="true"
                         :feedback="false" input-class="w-full!" />
                 </div>
 
@@ -47,9 +49,9 @@ const password = ref<string>('');
 
             <p class="text-center text-gray-600 dark:text-gray-400">
                 Não tem uma conta?
-                <a href="#" class="font-medium text-green-700 hover:text-green-600">
-                    Cadastre-se aqui
-                </a>
+                <Link :href="route('register')" class="font-medium text-green-700 hover:text-green-600">
+                Cadastre-se aqui
+                </Link>
             </p>
         </div>
     </div>

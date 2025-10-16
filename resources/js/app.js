@@ -1,5 +1,6 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 
@@ -22,6 +23,7 @@ createInertiaApp({
                     }
                 }
             })
+            .use(ZiggyVue)
             .mount(el)
     },
 })
