@@ -1,9 +1,11 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { ZiggyVue } from 'ziggy-js';
 import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import Aura from '@primeuix/themes/aura';
+import 'primeicons/primeicons.css';
 
 createInertiaApp({
     title: (title) => `${title} - AgroSystem`,
@@ -25,6 +27,7 @@ createInertiaApp({
                 }
             })
             .use(ToastService)
+            .use(ConfirmationService)
             .use(ZiggyVue)
             .mount(el)
     },

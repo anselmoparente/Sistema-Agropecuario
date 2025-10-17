@@ -1,27 +1,27 @@
 <script setup>
-import { router } from '@inertiajs/vue3';
-import { Button, useToast } from 'primevue';
+import { Head } from '@inertiajs/vue3';
 
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
+import { Card } from 'primevue';
 
-defineOptions({ layout: AppLayout });
-
-const toast = useToast();
-
-const logout = () => router.post(route('logout'), {
-    onError: () => {
-        toast.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Não foi possível completar a ação. Tente novamente.',
-            life: 3000
-        });
-    }
-});
+defineOptions({ layout: AuthenticatedLayout });
 </script>
 
 <template>
-    <Button label="Deslogar" icon="pi pi-sign-out" @click="logout"></Button>
+
+    <Head title="Início"></Head>
+
+    <Card class="shadow-lg">
+        <template #title>
+            <h1 class="text-2xl font-bold text-gray-800">Página Inicial</h1>
+        </template>
+        <template #content>
+            <div class="text-center py-8">
+                <p class="text-xl text-gray-700 mb-4">Bem-vindo ao AgroSystem!</p>
+                <p class="text-gray-500 mb-8">Utilize o menu lateral para navegar pelas funcionalidades do sistema.</p>
+            </div>
+        </template>
+    </Card>
 </template>
 
 <style scoped></style>

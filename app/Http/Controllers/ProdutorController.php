@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProdutorRequest;
 use App\Http\Requests\UpdateProdutorRequest;
 use App\Models\Produtor;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProdutorController extends Controller
 {
@@ -23,52 +24,57 @@ class ProdutorController extends Controller
                         ->orWhere('email', 'ilike', "%{$q}%");
                 })
             )
-            ->withCount(['propriedades', 'rebanhos'])
+            ->withCount(['propriedades', 'rebanhos', 'unidadesProducao'])
             ->orderBy('nome')->orderBy('id')
             ->paginate(min(max((int) $request->get('per_page', 15), 1), 100))
             ->withQueryString();
 
-        return view('produtores.index', compact('produtores', 'q'));
+        return Inertia::render('Produtores/Index', [
+            'produtores' => $produtores,
+            'filters' => ['q' => $q]
+        ]);
     }
 
     public function create()
     {
-        return view('produtores.create');
+        return Inertia::render('Produtores/Create');
     }
 
     public function store(StoreProdutorRequest $request)
     {
-        $produtor = Produtor::create($request->validated());
+        Produtor::create($request->validated());
 
-        return redirect()->route('produtores.show', $produtor)->with('success', 'Produtor criado com sucesso.');
+        return redirect()->route('produtores.index')->with('success', 'Produtor criado com sucesso.');
     }
 
-    public function show(Produtor $produtor)
+    public function show(Produtor $produtore)
     {
-        $produtor->load(['propriedades', 'rebanhos', 'unidadesProducao']);
+        $produtore->load(['propriedades', 'rebanhos', 'unidadesProducao']);
 
-        return view('produtores.show', compact('produtor'));
+        return Inertia::render('Produtores/Show', ['produtor' => $produtore]);
     }
 
-    public function edit(Produtor $produtor)
+    public function edit($id)
     {
-        return view('produtores.edit', compact('produtor'));
+        $produtor = Produtor::findOrFail($id);
+
+        return Inertia::render('Produtores/Edit', ['produtor' => $produtor]);
     }
 
-    public function update(UpdateProdutorRequest $request, Produtor $produtor)
+    public function update(UpdateProdutorRequest $request, Produtor $produtore)
     {
-        $produtor->update($request->validated());
+        $produtore->update($request->validated());
 
-        return redirect()->route('produtores.show', $produtor)->with('success', 'Produtor atualizado.');
+        return redirect()->route('produtores.show', $produtore)->with('success', 'Produtor atualizado.');
     }
 
-    public function destroy(Produtor $produtor)
+    public function destroy(Produtor $produtore)
     {
-        if ($produtor->propriedades()->exists()) {
+        if ($produtore->propriedades()->exists()) {
             return back()->withErrors('Não é possível excluir: produtor possui propriedades vinculadas.');
         }
 
-        $produtor->delete();
+        $produtore->delete();
 
         return redirect()->route('produtores.index')->with('success', 'Produtor removido.');
     }
