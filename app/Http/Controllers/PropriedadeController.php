@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePropriedadeRequest;
 use App\Models\Produtor;
 use App\Models\Propriedade;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PropriedadeController extends Controller
 {
@@ -32,40 +33,43 @@ class PropriedadeController extends Controller
             ->paginate(min(max((int) $request->get('per_page', 15), 1), 100))
             ->withQueryString();
 
-        return view('propriedades.index', compact('propriedades', 'uf', 'municipio', 'q'));
+        return Inertia::render('Propriedades/Index', [
+            'propriedades' => $propriedades,
+            'filters' => ['q' => $q]
+        ]);
     }
 
     public function create()
     {
         $produtores = Produtor::orderBy('nome')->get(['id', 'nome']);
 
-        return view('propriedades.create', compact('produtores'));
+        return Inertia::render('Propriedades/Create', ['produtores' => $produtores]);
     }
 
     public function store(StorePropriedadeRequest $request)
     {
-        $prop = Propriedade::create($request->validated());
+        $propriedade = Propriedade::create($request->validated());
 
-        return redirect()->route('propriedades.show', $prop)->with('success', 'Propriedade criada.');
+        return redirect()->route('propriedades.show', $propriedade)->with('success', 'Propriedade criada.');
     }
 
     public function show(Propriedade $propriedade)
     {
         $propriedade->load(['produtor', 'unidadesProducao', 'rebanhos']);
 
-        return view('propriedades.show', compact('propriedade'));
+        return Inertia::render('Propriedades/Show', ['propriedade' => $propriedade]);
     }
 
     public function edit(Propriedade $propriedade)
     {
-        return view('propriedades.edit', compact('propriedade'));
+        return Inertia::render('Propriedades/Edit', ['propriedade' => $propriedade]);
     }
 
     public function update(UpdatePropriedadeRequest $request, Propriedade $propriedade)
     {
         $propriedade->update($request->validated());
 
-        return redirect()->route('propriedades.show', $propriedade)->with('success', 'Propriedade atualizada.');
+        return redirect()->route('propriedades.show', $propriedade)->with('success', 'Propriedade atualizada com sucesso.');
     }
 
     public function destroy(Propriedade $propriedade)
@@ -76,6 +80,6 @@ class PropriedadeController extends Controller
 
         $propriedade->delete();
 
-        return redirect()->route('propriedades.index')->with('success', 'Propriedade removida.');
+        return redirect()->route('propriedades.index')->with('success', 'Propriedade removida com sucesso.');
     }
 }

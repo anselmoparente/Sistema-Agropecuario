@@ -1,6 +1,6 @@
 <script setup>
 import { watch } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 import { Button, Card, DatePicker, InputMask, InputText } from 'primevue';
@@ -46,6 +46,8 @@ watch(() => form.cpf_cnpj, (newValue, oldValue) => {
     }
 });
 
+const goBack = () => window.history.back();
+
 const update = () => form.put(route('produtores.update', props.produtor.id));
 </script>
 
@@ -57,9 +59,7 @@ const update = () => form.put(route('produtores.update', props.produtor.id));
         <template #title>
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-gray-800">Editar Produtor</h1>
-                <Link :href="route('produtores.index')">
-                <Button label="Voltar" icon="pi pi-arrow-left" class="p-button-text" />
-                </Link>
+                <Button label="Voltar" icon="pi pi-arrow-left" class="p-button-text" @click="goBack"/>
             </div>
         </template>
         <template #content>

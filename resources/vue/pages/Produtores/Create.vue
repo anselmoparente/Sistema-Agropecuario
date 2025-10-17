@@ -1,6 +1,6 @@
 <script setup>
 import { watch } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 import { Button, Card, DatePicker, InputMask, InputText } from 'primevue';
@@ -34,6 +34,8 @@ watch(() => form.cpf_cnpj, (value) => {
     }
 });
 
+const goBack = () => window.history.back();
+
 const create = () => form.post(route('produtores.store'));
 </script>
 
@@ -45,9 +47,7 @@ const create = () => form.post(route('produtores.store'));
         <template #title>
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-gray-800">Criar Novo Produtor</h1>
-                <Link :href="route('produtores.index')">
-                <Button label="Voltar" icon="pi pi-arrow-left" class="p-button-text" />
-                </Link>
+                <Button label="Voltar" icon="pi pi-arrow-left" class="p-button-text" @click="goBack" />
             </div>
         </template>
         <template #content>
@@ -96,7 +96,8 @@ const create = () => form.post(route('produtores.store'));
                     <div class="field mb-4">
                         <label for="data_cadastro" class="block text-gray-700 mb-2">Data de Cadastro</label>
                         <DatePicker id="data_cadastro" v-model="form.data_cadastro" class="w-full"
-                            :class="{ 'p-invalid': form.errors.data_cadastro }" dateFormat="dd/mm/yy" placeholder="Seleciona a Data"/>
+                            :class="{ 'p-invalid': form.errors.data_cadastro }" dateFormat="dd/mm/yy"
+                            placeholder="Seleciona a Data" />
                         <small v-if="form.errors.data_cadastro" class="p-error">{{ form.errors.data_cadastro }}</small>
                     </div>
                 </div>

@@ -26,7 +26,7 @@ class UpdatePropriedadeRequest extends FormRequest
             'municipio' => ['sometimes', 'required', 'string', 'max:255'],
             'uf' => ['sometimes', 'required', 'string', 'size:2', 'in:AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO'],
             'inscricao_estadual' => ['sometimes', 'nullable', 'string', 'max:50'],
-            'area_total' => ['sometimes', 'nullable', 'numeric', 'min:0'],
+            'area_total' => ['sometimes', 'required', 'numeric', 'min:0'],
         ];
     }
 }
