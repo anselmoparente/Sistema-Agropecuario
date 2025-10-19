@@ -45,6 +45,12 @@ const logout = () => router.post(route('logout'));
                 <i class="pi pi-sitemap mr-3"></i>
                 <span>Unidades de Produção</span>
                 </Link>
+                <Link :href="route('relatorios')"
+                    class="flex items-center px-4 py-2 rounded-md transition-colors duration-200 hover:bg-gray-700"
+                    :class="{ 'bg-gray-900 font-semibold': route().current('relatorios') }">
+                <i class="pi pi-chart-bar mr-3"></i>
+                <span>Relatórios</span>
+                </Link>
             </nav>
 
             <div class="mt-auto border-t border-gray-700 pt-4">

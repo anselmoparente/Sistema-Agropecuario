@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutorController;
 use App\Http\Controllers\PropriedadeController;
 use App\Http\Controllers\RebanhoController;
+use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UnidadeProducaoController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/produtores', ProdutorController::class);
     Route::resource('/propriedades', PropriedadeController::class);
     Route::resource('/rebanhos', RebanhoController::class);
+    Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios');
     Route::resource('/unidades-producao', UnidadeProducaoController::class)->parameters(['unidades-producao' => 'up']);;
 });
