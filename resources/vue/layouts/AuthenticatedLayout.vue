@@ -9,12 +9,12 @@ const logout = () => router.post(route('logout'));
 <template>
     <Toast position="top-right" />
     <div class="min-h-screen bg-gray-100 flex">
-        <aside class="w-64 bg-gray-800 text-white flex-shrink-0 p-4 flex flex-col shadow-lg">
+        <aside class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white flex flex-col shadow-lg p-4">
             <div class="text-center text-2xl font-bold mb-10 border-b border-gray-700 pb-4 text-gray-300">
                 AgroSystem
             </div>
 
-            <nav class="flex-grow flex flex-col space-y-2">
+            <nav class="flex-grow flex flex-col space-y-2 overflow-y-auto">
                 <Link :href="route('home')"
                     class="flex items-center px-4 py-2 rounded-md transition-colors duration-200 hover:bg-gray-700"
                     :class="{ 'bg-gray-900 font-semibold': route().current('home') }">
@@ -60,8 +60,8 @@ const logout = () => router.post(route('logout'));
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col">
-            <main class="flex-1 p-6 lg:p-10">
+        <div class="flex-1 ml-64 flex flex-col">
+            <main class="flex-1 p-6 lg:p-10 overflow-y-auto h-screen">
                 <slot></slot>
             </main>
         </div>
