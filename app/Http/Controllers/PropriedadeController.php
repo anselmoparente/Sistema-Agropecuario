@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePropriedadeRequest;
 use App\Models\Produtor;
 use App\Models\Propriedade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PropriedadeController extends Controller
@@ -50,7 +51,7 @@ class PropriedadeController extends Controller
     {
         $propriedade = Propriedade::create($request->validated());
 
-        return redirect()->route('propriedades.show', $propriedade)->with('success', 'Propriedade criada.');
+        return Redirect::route('propriedades.show', $propriedade)->with('success', 'Propriedade criada.');
     }
 
     public function show(Propriedade $propriedade)
@@ -69,7 +70,7 @@ class PropriedadeController extends Controller
     {
         $propriedade->update($request->validated());
 
-        return redirect()->route('propriedades.show', $propriedade)->with('success', 'Propriedade atualizada com sucesso.');
+        return Redirect::route('propriedades.show', $propriedade)->with('success', 'Propriedade atualizada com sucesso.');
     }
 
     public function destroy(Propriedade $propriedade)
@@ -80,6 +81,6 @@ class PropriedadeController extends Controller
 
         $propriedade->delete();
 
-        return redirect()->route('propriedades.index')->with('success', 'Propriedade removida com sucesso.');
+        return Redirect::route('propriedades.index')->with('success', 'Propriedade removida com sucesso.');
     }
 }

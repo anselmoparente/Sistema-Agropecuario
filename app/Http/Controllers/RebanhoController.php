@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateRebanhoRequest;
 use App\Models\Propriedade;
 use App\Models\Rebanho;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class RebanhoController extends Controller
@@ -42,7 +43,7 @@ class RebanhoController extends Controller
     {
         $rebanho = Rebanho::create($request->validated());
 
-        return redirect()->route('rebanhos.show', $rebanho)->with('success', 'Rebanho criado.');
+        return Redirect::route('rebanhos.show', $rebanho)->with('success', 'Rebanho criado.');
     }
 
     public function show(Rebanho $rebanho)
@@ -64,13 +65,13 @@ class RebanhoController extends Controller
     {
         $rebanho->update($request->validated());
 
-        return redirect()->route('rebanhos.show', $rebanho)->with('success', 'Rebanho atualizado.');
+        return Redirect::route('rebanhos.show', $rebanho)->with('success', 'Rebanho atualizado.');
     }
 
     public function destroy(Rebanho $rebanho)
     {
         $rebanho->delete();
 
-        return redirect()->route('rebanhos.index')->with('success', 'Rebanho removido.');
+        return Redirect::route('rebanhos.index')->with('success', 'Rebanho removido.');
     }
 }

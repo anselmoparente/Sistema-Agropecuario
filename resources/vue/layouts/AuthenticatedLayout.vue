@@ -39,6 +39,12 @@ const logout = () => router.post(route('logout'));
                 <i class="pi pi-prime mr-3"></i>
                 <span>Rebanhos</span>
                 </Link>
+                <Link :href="route('unidades-producao.index')"
+                    class="flex items-center px-4 py-2 rounded-md transition-colors duration-200 hover:bg-gray-700"
+                    :class="{ 'bg-gray-900 font-semibold': route().current('unidades-producao.*') }">
+                <i class="pi pi-sitemap mr-3"></i>
+                <span>Unidades de Produção</span>
+                </Link>
             </nav>
 
             <div class="mt-auto border-t border-gray-700 pt-4">

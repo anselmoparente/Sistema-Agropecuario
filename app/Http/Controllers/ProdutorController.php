@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProdutorRequest;
 use App\Http\Requests\UpdateProdutorRequest;
 use App\Models\Produtor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class ProdutorController extends Controller
@@ -44,7 +45,7 @@ class ProdutorController extends Controller
     {
         Produtor::create($request->validated());
 
-        return redirect()->route('produtores.index')->with('success', 'Produtor criado com sucesso.');
+        return Redirect::route('produtores.index')->with('success', 'Produtor criado com sucesso.');
     }
 
     public function show(Produtor $produtore)
@@ -65,7 +66,7 @@ class ProdutorController extends Controller
     {
         $produtore->update($request->validated());
 
-        return redirect()->route('produtores.show', $produtore)->with('success', 'Produtor atualizado.');
+        return Redirect::route('produtores.show', $produtore)->with('success', 'Produtor atualizado.');
     }
 
     public function destroy(Produtor $produtore)
@@ -76,6 +77,6 @@ class ProdutorController extends Controller
 
         $produtore->delete();
 
-        return redirect()->route('produtores.index')->with('success', 'Produtor removido.');
+        return Redirect::route('produtores.index')->with('success', 'Produtor removido.');
     }
 }

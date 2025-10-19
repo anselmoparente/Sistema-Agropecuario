@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateUnidadeProducaoRequest;
 use App\Models\Propriedade;
 use App\Models\UnidadeProducao;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class UnidadeProducaoController extends Controller
 {
@@ -21,49 +23,53 @@ class UnidadeProducaoController extends Controller
             ->paginate(min(max((int) $request->get('per_page', 15), 1), 100))
             ->withQueryString();
 
-        return view('unidades-producao.index', compact('ups', 'cultura'));
+        return Inertia::render('UnidadesProducao/Index', [
+            'ups' => $ups,
+            'cultura' => $cultura
+        ]);
     }
 
     public function create()
     {
-        $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
-        $culturas = UnidadeProducao::CULTURAS;
-
-        return view('unidades-producao.create', compact('propriedades', 'culturas'));
+        return Inertia::render('UnidadesProducao/Create', [
+            'propriedades' => Propriedade::orderBy('nome')->get(['id', 'nome']),
+            'culturas' => UnidadeProducao::CULTURAS,
+        ]);
     }
 
     public function store(StoreUnidadeProducaoRequest $request)
     {
         $up = UnidadeProducao::create($request->validated());
 
-        return redirect()->route('unidades-producao.show', $up)->with('success', 'Unidade de Produção criada.');
+        return Redirect::route('unidades-producao.show', $up)->with('success', 'Unidade de Produção criada.');
     }
 
     public function show(UnidadeProducao $up)
     {
         $up->load('propriedade.produtor');
 
-        return view('unidades-producao.show', ['up' => $up]);
+        return Inertia::render('UnidadesProducao/Show', ['up' => $up]);
     }
 
     public function edit(UnidadeProducao $up)
     {
-        $culturas = UnidadeProducao::CULTURAS;
-
-        return view('unidades-producao.edit', ['up' => $up, 'culturas' => $culturas]);
+        return Inertia::render('UnidadesProducao/Edit', [
+            'up' => $up,
+            'culturas' => UnidadeProducao::CULTURAS,
+        ]);
     }
 
     public function update(UpdateUnidadeProducaoRequest $request, UnidadeProducao $up)
     {
         $up->update($request->validated());
 
-        return redirect()->route('unidades-producao.show', $up)->with('success', 'Unidade de Produção atualizada.');
+        return Redirect::route('unidades-producao.show', $up)->with('success', 'Unidade de Produção atualizada.');
     }
 
     public function destroy(UnidadeProducao $up)
     {
         $up->delete();
 
-        return redirect()->route('unidades-producao.index')->with('success', 'Unidade de Produção removida.');
+        return Redirect::route('unidades-producao.index')->with('success', 'Unidade de Produção removida.');
     }
 }
