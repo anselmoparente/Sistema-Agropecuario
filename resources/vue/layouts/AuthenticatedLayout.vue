@@ -1,11 +1,9 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
-import Toast from 'primevue/toast';
-import Button from 'primevue/button';
 
-const logout = () => {
-    router.post(route('logout'));
-};
+import { Button, Toast } from 'primevue';
+
+const logout = () => router.post(route('logout'));
 </script>
 
 <template>
@@ -34,6 +32,12 @@ const logout = () => {
                     :class="{ 'bg-gray-900 font-semibold': route().current('propriedades.*') }">
                 <i class="pi pi-map-marker mr-3"></i>
                 <span>Propriedades</span>
+                </Link>
+                <Link :href="route('rebanhos.index')"
+                    class="flex items-center px-4 py-2 rounded-md transition-colors duration-200 hover:bg-gray-700"
+                    :class="{ 'bg-gray-900 font-semibold': route().current('rebanhos.*') }">
+                <i class="pi pi-prime mr-3"></i>
+                <span>Rebanhos</span>
                 </Link>
             </nav>
 
