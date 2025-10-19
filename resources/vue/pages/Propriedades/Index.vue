@@ -1,9 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { Head, router, Link, useForm } from '@inertiajs/vue3';
 
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
-import { Button, Card, ConfirmDialog, Column, DataTable, InputText, useConfirm, useToast } from 'primevue';
+import { Button, Card, ConfirmDialog, Column, DataTable, InputText, Select, useConfirm, useToast } from 'primevue';
 import debounce from 'lodash/debounce';
 
 defineOptions({ layout: AuthenticatedLayout });
@@ -11,24 +11,32 @@ defineOptions({ layout: AuthenticatedLayout });
 const props = defineProps({
     propriedades: Object,
     filters: Object,
+    produtores: Array,
+    municipios: Array,
 });
 
 const confirm = useConfirm();
 const toast = useToast();
-const search = ref(props.filters.q);
-
 const form = useForm({});
 
-const performSearch = debounce((value) => {
-    router.get(route('propriedades.index'), { q: value }, {
+const filtersForm = reactive({
+    q: props.filters.q,
+    produtor_id: props.filters.produtor_id,
+    municipio: props.filters.municipio,
+});
+
+const performSearch = debounce(() => {
+    router.get(route('propriedades.index'), filtersForm, {
         preserveState: true,
         replace: true,
+        preserveScroll: true,
     });
 }, 300);
 
-watch(search, (value) => {
-    performSearch(value);
-});
+watch(filtersForm, () => {
+    performSearch();
+}, { deep: true });
+
 
 const confirmDelete = (propriedade) => {
     confirm.require({
@@ -67,11 +75,12 @@ const confirmDelete = (propriedade) => {
             </div>
         </template>
         <template #content>
-            <div class="flex justify-end mb-4">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText v-model="search" placeholder="Buscar por nome..." class="w-full sm:w-auto" />
-                </span>
+            <div class="flex flex-col sm:flex-row justify-end items-center gap-2 mb-4">
+                <Select v-model="filtersForm.produtor_id" :options="produtores" optionLabel="nome" optionValue="id"
+                    placeholder="Filtrar por Produtor" showClear class="w-full sm:w-60" />
+                <Select v-model="filtersForm.municipio" :options="municipios" placeholder="Filtrar por Município"
+                    showClear class="w-full sm:w-60" />
+                <InputText v-model="filtersForm.q" placeholder="Buscar por Nome..." class="w-full" />
             </div>
 
             <DataTable :value="propriedades.data" paginator :rows="propriedades.per_page" stripedRows

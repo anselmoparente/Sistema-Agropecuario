@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRebanhoRequest;
 use App\Http\Requests\UpdateRebanhoRequest;
+use App\Models\Produtor;
 use App\Models\Propriedade;
 use App\Models\Rebanho;
 use Illuminate\Http\Request;
@@ -14,20 +15,30 @@ class RebanhoController extends Controller
 {
     public function index(Request $request)
     {
-        $especie = $request->string('especie')->toString();
-        $q = $request->string('q')->toString();
-
         $rebanhos = Rebanho::query()
-            ->when($especie, fn($q) => $q->daEspecie($especie))
             ->with('propriedade.produtor')
+            ->when(
+                $request->string('especie')->toString(),
+                fn($query, $especie) => $query->where('especie', $especie)
+            )
+            ->when(
+                $request->integer('propriedade_id'),
+                fn($query, $propriedadeId) => $query->where('propriedade_id', $propriedadeId)
+            )
+            ->when(
+                $request->integer('produtor_id'),
+                fn($query, $produtorId) => $query->whereHas('propriedade', fn($q) => $q->where('produtor_id', $produtorId))
+            )
             ->orderBy('especie')->orderBy('id')
             ->paginate(min(max((int) $request->get('per_page', 15), 1), 100))
             ->withQueryString();
 
         return Inertia::render('Rebanhos/Index', [
             'rebanhos' => $rebanhos,
-            'especie' => $especie,
-            'filters' => ['q' => $q]
+            'filters' => $request->only(['especie', 'propriedade_id', 'produtor_id']),
+            'especies' => Rebanho::ESPECIES,
+            'propriedades' => Propriedade::orderBy('nome')->get(['id', 'nome']),
+            'produtores' => Produtor::orderBy('nome')->get(['id', 'nome']),
         ]);
     }
 

@@ -1,34 +1,42 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { Head, router, Link, useForm } from '@inertiajs/vue3';
 
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
-import { Button, Card, ConfirmDialog, Column, DataTable, InputText, useConfirm, useToast } from 'primevue';
+import { Button, Card, ConfirmDialog, Column, DataTable, Select, useConfirm, useToast } from 'primevue';
 import debounce from 'lodash/debounce';
 
 defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     ups: Object,
-    cultura: String,
+    filters: Object,
+    culturas: Array,
+    propriedades: Array,
+    produtores: Array,
 });
 
 const confirm = useConfirm();
 const toast = useToast();
-const search = ref(props.cultura);
-
 const form = useForm({});
 
-const performSearch = debounce((value) => {
-    router.get(route('unidades-producao.index'), { cultura: value }, {
+const filtersForm = reactive({
+    cultura: props.filters.cultura,
+    propriedade_id: props.filters.propriedade_id,
+    produtor_id: props.filters.produtor_id,
+});
+
+const performSearch = debounce(() => {
+    router.get(route('unidades-producao.index'), filtersForm, {
         preserveState: true,
         replace: true,
+        preserveScroll: true,
     });
 }, 300);
 
-watch(search, (value) => {
-    performSearch(value);
-});
+watch(filtersForm, () => {
+    performSearch();
+}, { deep: true });
 
 const confirmDelete = (up) => {
     confirm.require({
@@ -67,11 +75,13 @@ const confirmDelete = (up) => {
             </div>
         </template>
         <template #content>
-            <div class="flex justify-end mb-4">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText v-model="search" placeholder="Buscar por cultura..." class="w-full sm:w-auto" />
-                </span>
+            <div class="flex flex-col sm:flex-row justify-end items-center gap-2 mb-4">
+                <Select v-model="filtersForm.cultura" :options="culturas" placeholder="Filtrar por Cultura" showClear
+                    class="w-full sm:w-60" />
+                <Select v-model="filtersForm.propriedade_id" :options="propriedades" optionLabel="nome" optionValue="id"
+                    placeholder="Filtrar por Propriedade" showClear class="w-full sm:w-60" />
+                <Select v-model="filtersForm.produtor_id" :options="produtores" optionLabel="nome" optionValue="id"
+                    placeholder="Filtrar por Produtor" showClear class="w-full sm:w-60" />
             </div>
 
             <DataTable :value="ups.data" paginator :rows="ups.per_page" stripedRows responsiveLayout="scroll"

@@ -14,29 +14,33 @@ class PropriedadeController extends Controller
 {
     public function index(Request $request)
     {
-        $uf = $request->string('uf')->toString();
-        $municipio = $request->string('municipio')->toString();
-        $q = $request->string('q')->toString();
-
         $propriedades = Propriedade::query()
+            ->with('produtor')
             ->when(
-                $q,
-                fn($query) =>
+                $request->string('q')->toString(),
+                fn($query, $q) =>
                 $query->where(function ($w) use ($q) {
                     $w->where('nome', 'ilike', "%{$q}%")
-                        ->orWhere('inscricao_estadual', 'ilike', "%{$q}%");
+                        ->orWhereHas('produtor', fn($pq) => $pq->where('nome', 'ilike', "%{$q}%"));
                 })
             )
-            ->daLocalidade($uf ?: null, $municipio ?: null)
-            ->with(['produtor'])
-            ->withCount(['unidadesProducao', 'rebanhos'])
+            ->when(
+                $request->integer('produtor_id'),
+                fn($query, $produtorId) => $query->where('produtor_id', $produtorId)
+            )
+            ->when(
+                $request->string('municipio')->toString(),
+                fn($query, $municipio) => $query->where('municipio', $municipio)
+            )
             ->orderBy('nome')->orderBy('id')
             ->paginate(min(max((int) $request->get('per_page', 15), 1), 100))
             ->withQueryString();
 
         return Inertia::render('Propriedades/Index', [
             'propriedades' => $propriedades,
-            'filters' => ['q' => $q]
+            'filters' => $request->only(['q', 'produtor_id', 'municipio']),
+            'produtores' => Produtor::orderBy('nome')->get(['id', 'nome']),
+            'municipios' => Propriedade::query()->select('municipio')->distinct()->orderBy('municipio')->pluck('municipio'),
         ]);
     }
 

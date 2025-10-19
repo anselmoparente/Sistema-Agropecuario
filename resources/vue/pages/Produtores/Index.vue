@@ -68,10 +68,7 @@ const confirmDelete = (produtor) => {
         </template>
         <template #content>
             <div class="flex justify-end mb-4">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText v-model="search" placeholder="Buscar por nome, CPF/CNPJ..." class="w-full sm:w-auto" />
-                </span>
+                <InputText v-model="search" placeholder="Buscar por nome, CPF/CNPJ..." class="w-full" />
             </div>
 
             <DataTable :value="produtores.data" paginator :rows="produtores.per_page" stripedRows

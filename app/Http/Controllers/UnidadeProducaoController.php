@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUnidadeProducaoRequest;
 use App\Http\Requests\UpdateUnidadeProducaoRequest;
+use App\Models\Produtor;
 use App\Models\Propriedade;
 use App\Models\UnidadeProducao;
 use Illuminate\Http\Request;
@@ -14,18 +15,30 @@ class UnidadeProducaoController extends Controller
 {
     public function index(Request $request)
     {
-        $cultura = $request->string('cultura')->toString();
-
         $ups = UnidadeProducao::query()
-            ->when($cultura, fn($q) => $q->daCultura($cultura))
             ->with('propriedade.produtor')
+            ->when(
+                $request->string('cultura')->toString(),
+                fn($query, $cultura) => $query->where('nome_cultura', $cultura)
+            )
+            ->when(
+                $request->integer('propriedade_id'),
+                fn($query, $propriedadeId) => $query->where('propriedade_id', $propriedadeId)
+            )
+            ->when(
+                $request->integer('produtor_id'),
+                fn($query, $produtorId) => $query->whereHas('propriedade', fn($q) => $q->where('produtor_id', $produtorId))
+            )
             ->orderBy('nome_cultura')->orderBy('id')
             ->paginate(min(max((int) $request->get('per_page', 15), 1), 100))
             ->withQueryString();
 
         return Inertia::render('UnidadesProducao/Index', [
             'ups' => $ups,
-            'cultura' => $cultura
+            'filters' => $request->only(['cultura', 'propriedade_id', 'produtor_id']),
+            'culturas' => UnidadeProducao::CULTURAS,
+            'propriedades' => Propriedade::orderBy('nome')->get(['id', 'nome']),
+            'produtores' => Produtor::orderBy('nome')->get(['id', 'nome']),
         ]);
     }
 
