@@ -1,61 +1,188 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Sistema Agropecuário**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um sistema de gestão agropecuária desenvolvido utilizando **Laravel** no back-end e **Vue.js com Inertia.js** no front-end.
 
-## About Laravel
+O sistema permite o gerenciamento completo de **produtores rurais**, **propriedades**, **rebanhos** e **unidades de produção**, além de oferecer **relatórios detalhados** e **exportação de dados**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## **Funcionalidades Implementadas**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **CRUD Completo:** Gestão total para Produtores, Propriedades, Rebanhos e Unidades de Produção.  
+* **Dashboard:** Página inicial com gráficos e indicadores de desempenho (KPIs) sobre os dados do sistema.  
+* **Listagens Avançadas:** Todas as listagens possuem paginação e filtros dinâmicos.  
+* **Relatórios:** Secção dedicada com dados agregados e estatísticas.  
+* **Exportação de Dados:** Exportação de relatórios em **Excel (.xlsx)** e **PDF**.  
+* **Testes Automatizados:** Testes de back-end com **PHPUnit** e de front-end com **Vitest**.  
+* **Database Seeding:** População automática da base de dados com dados de exemplo realistas.  
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## **Tecnologias Utilizadas**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Back-end:** Laravel 12, PHP 8.2, PostgreSQL  
+**Front-end:** Vue.js 3, Inertia.js, Vite  
+**UI:** PrimeVue e Tailwind CSS  
+**Exportação:** spatie/simple-excel (Excel) e barryvdh/laravel-dompdf (PDF)  
+**Testes:** PHPUnit (back-end), Vitest (front-end)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## **Instalação e Execução**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **Pré-requisitos**
 
-### Premium Partners
+- PHP ≥ 8.2  
+- Composer  
+- Node.js & NPM  
+- PostgreSQL  
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### **Passos para Instalação**
 
-## Contributing
+1. **Clonar o repositório:**
+   ```bash
+   git clone https://github.com/anselmoparente/Sistema-Agropecuario.git
+   cd Sistema-Agropecuario
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Instalar dependências do PHP:**
+   ```bash
+   composer install
+   ```
 
-## Code of Conduct
+3. **Instalar dependências do Node.js:**
+   ```bash
+   npm install
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Configurar o ambiente:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   Depois, edite o arquivo `.env` e configure as credenciais do PostgreSQL:
+   ```bash
+   DB_CONNECTION=pgsql
+   DB_HOST=127.0.0.1
+   DB_PORT=5432
+   DB_DATABASE=sua_db
+   DB_USERNAME=seu_user
+   DB_PASSWORD=sua_senha
+   ```
 
-## Security Vulnerabilities
+5. **Criar e popular o banco de dados:**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## **Executando o Projeto**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. **Iniciar o servidor de desenvolvimento do front-end:**
+   ```bash
+   npm run dev
+   ```
+
+2. **Iniciar o servidor do Laravel (back-end):**
+   ```bash
+   php artisan serve
+   ```
+
+Após esses passos, o sistema estará disponível em:  
+**http://127.0.0.1:8000**
+
+**Credenciais de Acesso Padrão:**
+
+- **Email:** admin@example.com  
+- **Senha:** password  
+
+---
+
+## **Como Testar o Sistema**
+
+### **1. Testes Automatizados**
+
+Antes de rodar os testes, é necessário configurar um ambiente isolado de testes para o Laravel.
+
+#### **Configurar o Ambiente de Testes**
+
+1. **Criar o arquivo `.env.testing`:**
+   ```bash
+   cp .env .env.testing
+   ```
+
+2. **Editar o `.env.testing` e configurar o banco de dados de teste:**
+   ```bash
+   DB_CONNECTION=sqlite
+   DB_DATABASE=:memory:
+   ```
+
+3. **Garantir que a chave da aplicação (`APP_KEY`) seja a mesma do `.env` principal.**  
+   Se ela não for copiada automaticamente, copie manualmente o valor:
+   ```bash
+   APP_KEY=base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   ```
+
+#### **Executar os Testes de Back-end (PHPUnit)**
+
+Para rodar todos os testes do Laravel:
+```bash
+php artisan test
+```
+
+Para executar com relatório de cobertura:
+```bash
+php artisan test --coverage
+```
+
+#### **Executar os Testes de Front-end (Vitest)**
+
+Rode os testes dos componentes Vue:
+```bash
+npm run test
+```
+
+---
+
+### **2. Testes Manuais**
+
+Após executar o projeto (Laravel + Vite):
+
+1. Acesse `http://127.0.0.1:8000`  
+2. Faça login com:
+   ```
+   Email: admin@example.com
+   Senha: password
+   ```
+3. Explore as seções:
+   - **Produtores** → CRUD completo  
+   - **Propriedades** → Associação com produtores  
+   - **Rebanhos** → Controle por propriedade  
+   - **Relatórios** → Geração de relatórios e exportação (Excel/PDF)  
+4. Teste filtros, paginação e geração de relatórios.  
+5. Verifique o dashboard inicial com KPIs e gráficos.  
+
+---
+
+## **Arquitetura e Qualidade**
+
+- **Monólito Moderno:** Laravel + Vue + Inertia.js em uma única base, simulando SPA sem API REST separada.  
+- **Boas Práticas:** Controllers enxutos, componentes Vue modulares e testes automatizados.  
+- **UX Responsiva:** Interface desenvolvida com PrimeVue e Tailwind CSS.  
+- **Performance:** Filtros com debounce e carregamento otimizado de dados.  
+
+---
+
+## **Exemplos de Relatórios**
+
+### **1. Relatório de Propriedades (Excel)**
+- **Descrição:** Gera um `.xlsx` com todas as propriedades registradas.  
+- **Colunas:** Nome da Propriedade, Produtor, Município, UF, Inscrição Estadual, Área Total (ha).  
+- [Exemplo visual](https://imgur.com/a/KFqTyG6)
+
+### **2. Relatório Geral de Rebanhos (PDF)**
+- **Descrição:** Lista todos os rebanhos agrupados por produtor.  
+- **Conteúdo:** Tabelas detalhadas por propriedade, espécie, quantidade e finalidade.  
+- [Exemplo visual](https://imgur.com/a/I817ZwP)
+
