@@ -18,4 +18,8 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/vue'),
         },
     },
+    test: {
+        globals: true,
+        environment: 'happy-dom',
+    },
 });
