@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/produtores', ProdutorController::class);
     Route::resource('/propriedades', PropriedadeController::class);
     Route::resource('/rebanhos', RebanhoController::class);
+    Route::resource('/unidades-producao', UnidadeProducaoController::class)->parameters(['unidades-producao' => 'up']);
     Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios');
-    Route::resource('/unidades-producao', UnidadeProducaoController::class)->parameters(['unidades-producao' => 'up']);;
+    Route::get('/relatorios/exportar/propriedades-excel', [RelatorioController::class, 'exportarPropriedadesExcel'])->name('relatorios.export.propriedades.excel');
+    Route::get('/relatorios/exportar/rebanhos-pdf', [RelatorioController::class, 'exportarRebanhosPdf'])->name('relatorios.export.rebanhos.pdf');
 });
