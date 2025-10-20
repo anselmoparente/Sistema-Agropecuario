@@ -2,7 +2,7 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Button, InputText, Password, useToast } from 'primevue';
 
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 import logo from '@/assets/logo.png';
 
 defineOptions({ layout: AppLayout });
